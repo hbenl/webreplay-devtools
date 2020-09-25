@@ -40,7 +40,7 @@ module.exports = {
       "node_modules",
     ],
     alias: {
-      "record-replay-client": path.resolve(__dirname, "../protocol/js"),
+      "record-replay-protocol": path.resolve(__dirname, "../protocol/js"),
     },
   },
   module: {
