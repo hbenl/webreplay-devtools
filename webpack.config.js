@@ -38,6 +38,9 @@ module.exports = {
       "src/devtools/client/shared/vendor",
       "node_modules",
     ],
+    alias: {
+      "record-replay-client": path.resolve(__dirname, "../protocol/js"),
+    },
   },
   module: {
     rules: [

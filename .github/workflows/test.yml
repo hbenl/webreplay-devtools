@@ -1,6 +1,6 @@
 # It would be nice if this could be commoned up with deploy.yml
 name: Run tests
-on: pull_request
+on: [pull_request, workflow_dispatch]
 
 jobs:
   build:
@@ -8,19 +8,29 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Checkout
+      - name: Checkout devtools
         uses: actions/checkout@v2
+        with:
+          path: devtools
+      - name: Checkout protocol
+        uses: actions/checkout@v2
+        with:
+          repository: RecordReplay/protocol
+          path: protocol
       - name: Install Dependencies
         run: npm install
+        working-directory: devtools
       - name: Build webpack
         run: ./node_modules/.bin/webpack --mode=development
+        working-directory: devtools
       - name: Tar up output files
         run: tar -czf dist.tgz index.html dist node_modules
+        working-directory: devtools
       - name: Create artifact
         uses: actions/upload-artifact@v2
         with:
           name: dist
-          path: dist.tgz
+          path: devtools/dist.tgz
   download:
     name: Download replay browser
     runs-on: ubuntu-latest
