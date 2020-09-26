@@ -1,8 +1,11 @@
 const { ThreadFront } = require("./thread");
-const { sendMessage } = require("./socket");
+const { sendMessage, addEventListener, removeEventListener } = require("./socket");
 const { defer } = require("./utils");
+import { ProtocolClient } from "record-replay-protocol/js/client";
 
 const resizeHeightForTooltip = 180;
+
+const client = new ProtocolClient({ sendCommand: sendMessage, addEventListener, removeEventListener });
 
 export class DownloadCancelledError extends Error {}
 
@@ -113,8 +116,7 @@ export class ScreenshotCache {
 
   private async download(point: string, resizeHeight?: number): Promise<Screenshot> {
     const screen = (
-      await sendMessage(
-        "Graphics.getPaintContents",
+      await client.Graphics.getPaintContents(
         { point, mimeType: "image/jpeg", resizeHeight },
         ThreadFront.sessionId
       )
