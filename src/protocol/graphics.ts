@@ -477,5 +477,5 @@ export function precacheScreenshots(startTime: number): UIThunkAction {
 // Snap time to 50ms intervals, snapping up.
 const snapInterval = 50;
 export function snapTimeForPlayback(time: number) {
-  return time + snapInterval - (time % snapInterval);
+  return Math.ceil(time / snapInterval) * snapInterval;
 }
